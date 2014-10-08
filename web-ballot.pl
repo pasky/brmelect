@@ -30,7 +30,7 @@ print <<EOT;
  <title>brmelect Web Ballot</title>
  <style type="text/css">
   p, li { font-family: monospace; }
-  #ballot { margin-left: auto; margin-right: auto; border: 1pt solid; width: 15em; padding: 1ex 1em; }
+  #ballot { margin-left: auto; margin-right: auto; border: 1pt solid; width: 20em; padding: 1ex 1em; }
   .error { text-width: bold; color: red }
  </style>
 </head>
