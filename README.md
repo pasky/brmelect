@@ -13,3 +13,10 @@ permissions for all but the owner.
 
 It should just work; you may need to adjust the `votes.txt` path currently
 hardcoded in `web-ballot.pl`, where the cast votes are recorded.
+
+Counting Votes
+--------------
+
+This script will show just the final vote for each token:
+
+	perl -nle 'chomp; @b = split/,/; $a{$b[0]} = [@b]; END { for (values %a) { print join(",", @$_); } }' ~/votes.txt
