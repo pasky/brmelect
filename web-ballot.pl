@@ -80,9 +80,19 @@ if ($q->param('go')) {
 
 		for my $name (@names) {
 			my $pref = $q->param($name);
-			next unless ($pref);
+			next if (not defined $pref or $pref eq '');
+			if (length $pref > 5) {
+				print qq#<p class="error">Length of preference for $name is # . (length $pref) . qq# which is just waaay too much. Please go back and try again.</p>#;
+				exit;
+			}
+			$pref =~ s/\s*//g;
 			unless ($pref =~ /^\d+$/) {
+				$pref =~ s/[^\w\d.,-]//g;
 				print qq#<p class="error">Preference for $name is $pref, which is not a number. Please go back and try again.</p>#;
+				exit;
+			}
+			if ($pref < 1 or $pref > @names) {
+				print qq#<p class="error">Preference for $name is $pref, which is out of the sensible range 1..# . (scalar @names) . qq#. Please go back and try again.</p>#;
 				exit;
 			}
 			if ($indices[$pref] ne '') {
@@ -107,7 +117,7 @@ if ($q->param('go')) {
 			}
 		}
 
-		if ($indices[1] eq 0) {
+		if ($indices[1] eq '') {
 			print qq#<p class="error">You must assign a preference (1) to at least one candidate. Please go back and try again.</p>#;
 			exit;
 		}
