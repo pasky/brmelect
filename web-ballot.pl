@@ -32,9 +32,31 @@ print <<EOT;
   p, li { font-family: monospace; }
   #ballot { margin-left: auto; margin-right: auto; border: 1pt solid; width: 20em; padding: 1ex 1em; }
   .error { text-width: bold; color: red }
+  #blurb { margin: 8ex 2em; }
  </style>
 </head>
 <body><h1 align="center">brmelect Web Ballot</h1>
+
+<div id="blurb">
+
+<p align="center">You can find your token on your paper ballot.<br />
+<b style="color: darkred">Keep your token secret until the vote is closed!<br />
+Udržujte svůj token v tajnosti, dokud není hlasování uzavřeno!</b></p>
+
+<p>Enter preference numbers
+for individual candidates.  You may skip some candidates (which you absolutely
+do not wish to elect), but you must select at least one candidate. You must start
+numbering your candidates with number 1, all candidates must have a unique
+number and you must not skip any number.</p>
+
+<p><a href="https://brmlab.cz/members/vnitrni-predpisy/sbrm/2011/5">2011/5 VII.8</a>: <em>Účastníci Valné hromady označí na volebních lístcích pořadí kandidátů připsáním čísla z nepřerušené řady přirozených čísel začínající jedničkou ke jménu kandidáta. Hlasovací lístek, který neobsahuje žádného označeného kandidáta nebo obsahuje alespoň dvě stejná čísla připsaná k různým kandidátům nebo takový, na kterém nejsou použita čísla z nepřerušené řady přirozených čísel, nebo žádný kandidát není označen číslem jedna, je neplatný.
+</em></p>
+
+<p>If you wish to cast an invalid vote, check the invalid ballot checkbox.</p>
+
+<hr />
+
+</div>
 
 EOT
 
