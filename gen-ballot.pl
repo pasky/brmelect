@@ -20,7 +20,7 @@ our $fontface = 'Arial';
 our $ffontface = 'Courier New';
 # large, normal, small
 our @fontsize = (26, 11, 8);
-our @linespacing = (18, 13, 10);
+our @linespacing = (18, 13, 8);
 our $topmargin = 2;
 
 our $contact = 'brmelect: your votes are safe with us';
@@ -118,12 +118,21 @@ sub ballot {
 	$cr->stroke;
 
 
-	my $ypos = $topmargin + $linespacing[0] / 2;
+	my $ypos = $topmargin;
 	# ballot_text($cr, \$ypos, $fontface, 'normal', 'bold', 0, $host);
 	# ballot_text($cr, \$ypos, $ffontface, 'normal', 'normal', 1, $mac);
 	for my $name (@$names) {
 		ballot_text_plus_box($cr, \$ypos, $fontface, 'normal', 'normal', 1, $name);
 	}
+
+	$ypos += $linespacing[1] / 2;
+	$cr->set_dash(1.0, 2.0);
+	$cr->move_to(0, $ypos);
+	$cr->line_to($ballot[0], $ypos);
+	$cr->stroke;
+	$cr->set_dash([1]);
+	$ypos += $linespacing[2] / 2;
+
 	my $tok = gen_token();
 	print($tok."\n");
 	ballot_text_centered($cr, \$ypos, $fontface, 'italic', 'normal', 2, $tok);
