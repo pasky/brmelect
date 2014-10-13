@@ -20,7 +20,7 @@ our $fontface = 'Arial';
 our $ffontface = 'Courier New';
 # large, normal, small
 our @fontsize = (26, 11, 8);
-our @linespacing = (18, 13, 8);
+our @linespacing = (18, 13, 3);
 our $topmargin = 2;
 
 our $contact = 'brmelect: your votes are safe with us';
@@ -33,7 +33,8 @@ use List::Util qw(min);
 use List::MoreUtils qw(pairwise);
 use Cairo;
 
-my $n_ballots = pop @ARGV;
+my $n_ballots = shift @ARGV;
+my $label = shift @ARGV;
 my @names;
 while (<>) {
 	chomp;
@@ -136,6 +137,7 @@ sub ballot {
 	my $tok = gen_token();
 	print($tok."\n");
 	ballot_text_centered($cr, \$ypos, $fontface, 'italic', 'normal', 2, $tok);
+	ballot_text_centered($cr, \$ypos, $fontface, 'normal', 'bold', 2, $label);
 	ballot_text_centered($cr, \$ypos, $fontface, 'italic', 'normal', 2, $contact);
 }
 

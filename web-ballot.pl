@@ -6,7 +6,8 @@ use v5.10;
 
 use CGI;
 
-my $votefile = '/home/pasky/votes.txt';
+my $label = 'testovaci komise';
+my $votefile = "/home/pasky/votes $label.txt";
 
 our @names;
 open my $fh, "names.txt" or die "$!";
@@ -39,7 +40,7 @@ print <<EOT;
   td { border: 1pt solid; padding: 0.5ex 0.5em; }
  </style>
 </head>
-<body><h1 align="center">brmelect Web Ballot</h1>
+<body><h1 align="center">brmelect Web Ballot: $label</h1>
 
 <div id="blurb">
 
