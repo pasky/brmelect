@@ -1,12 +1,18 @@
+Initialization
+--------------
+
+Copy `names-sample.txt` to `names.txt` or create your own `names.txt`.
+Clobber your `~/votes.txt` file.
+
 Generating Ballots
 ------------------
 
-	./gen-ballot.pl 15 <names-sample.txt
+	./gen-ballot.pl 15 <names.txt >tokens.txt
 
 Web Ballot CGI Script
 ---------------------
 
-Put `names-sample.txt` and `tokens.txt` to the same directory as
+Put `names.txt` and `tokens.txt` to the same directory as
 `web-ballot.pl` and make that directory available for CGI script execution.
 If this directory is accessible over web, don't forget to remove read
 permissions for all but the owner.

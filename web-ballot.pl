@@ -7,7 +7,7 @@ use v5.10;
 use CGI;
 
 our @names;
-open my $fh, "names-sample.txt" or die "$!";
+open my $fh, "names.txt" or die "$!";
 while (<$fh>) {
 	chomp;
 	push @names, $_;
