@@ -71,54 +71,35 @@ if ($q->param('go')) {
 	my $votestr;
 	unless ($q->param('invalid')) {
 		my @indices;
-		for (0..@names) {
-			$indices[$_] = '';
-		}
 		# XXX: We ignore $indices[0] for simplicity, we start indexing from 1 here!
 		my %prefs;
 		my $n_set = 0;
 
-		for my $name (@names) {
-			my $pref = $q->param($name);
-			next if (not defined $pref or $pref eq '');
-			if (length $pref > 5) {
-				print qq#<p class="error">Length of preference for $name is # . (length $pref) . qq# which is just waaay too much. Please go back and try again.</p>#;
+		my $over = 0;
+		for my $i (1..@names) {
+			my $pref = $q->param($i);
+			if (not defined $pref or $pref eq '') {
+				$over = 1;
+				next;
+			}
+			if ($over > 0) {
+				print qq#<p class="error">Number $i has a candidate but some higher preference does not, which is not permitted. Please go back and try again.</p>#;
 				exit;
 			}
-			$pref =~ s/\s*//g;
-			unless ($pref =~ /^\d+$/) {
-				$pref =~ s/[^\w\d.,-]//g;
-				print qq#<p class="error">Preference for $name is $pref, which is not a number. Please go back and try again.</p>#;
+			if (not grep { $_ eq $pref } @names) {
+				print qq#<p class="error">Number $i has an unknown candidate $pref, are you trolling? Please go back and try again.</p>#;
 				exit;
 			}
-			if ($pref < 1 or $pref > @names) {
-				print qq#<p class="error">Preference for $name is $pref, which is out of the sensible range 1..# . (scalar @names) . qq#. Please go back and try again.</p>#;
+			if (exists $prefs{$pref}) {
+				print qq#<p class="error">Candidate $pref is selected as both number $prefs{$pref} and $i, this is not permitted. Please go back and try again.</p>#;
 				exit;
 			}
-			if ($indices[$pref] ne '') {
-				print qq#<p class="error">Preference for $name is $pref, but this number is already also used for the candidate '$indices[$pref]'. Please go back and try again.</p>#;
-				exit;
-			}
-			$indices[$pref] = $name;
-			$prefs{$name} = $pref;
-			$n_set++;
+			$prefs{$pref} = $i;
+			$indices[$i] = $pref;
 		}
 
-		for my $i (1..$n_set) {
-			if ($indices[$i] eq '') {
-				print qq#<p class="error">Number $i was left unused, which is not permitted. Please go back and try again.</p>#;
-				exit;
-			}
-		}
-		for my $i (($n_set+1)..$#indices) {
-			if ($indices[$i] ne '') {
-				print qq#<p class="error">Number $i was used out of uninterrupted natural number sequence, which is not permitted. Please go back and try again.</p>#;
-				exit;
-			}
-		}
-
-		if ($indices[1] eq '') {
-			print qq#<p class="error">You must assign a preference (1) to at least one candidate. Please go back and try again.</p>#;
+		if (not keys %prefs) {
+			print qq#<p class="error">You must assign a preference to at least one candidate. Please go back and try again.</p>#;
 			exit;
 		}
 
@@ -146,8 +127,9 @@ print <<EOT;
 <ul>
 EOT
 
-for my $name (@names) {
-	print qq#<li><input type="text" name="$name" size="3" /> $name</li>\n#;
+for my $i (1..@names) {
+	my $options = join('', map { qq#<option value="$_">$_</option># } @names);
+	print qq#<li>$i. <select name="$i"><option value="" selected="1">- - -</option>$options</select></li>\n#;
 }
 
 print <<EOT;
