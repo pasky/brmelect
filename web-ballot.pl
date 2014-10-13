@@ -142,7 +142,7 @@ if ($q->param('go')) {
 print <<EOT;
 <form method="post">
 <div id="ballot">
-<p align="center"><b>Token:</b> <input type="text" name="token" size="5" maxlength="5" /></p>
+<p align="center"><b>Token:</b> <input type="password" name="token" size="5" maxlength="5" /></p>
 <ul>
 EOT
 
