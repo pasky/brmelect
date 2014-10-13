@@ -6,6 +6,8 @@ use v5.10;
 
 use CGI;
 
+my $votefile = '/home/pasky/votes.txt';
+
 our @names;
 open my $fh, "names.txt" or die "$!";
 while (<$fh>) {
@@ -33,6 +35,8 @@ print <<EOT;
   #ballot { margin-left: auto; margin-right: auto; border: 1pt solid; width: 20em; padding: 1ex 1em; }
   .error { text-width: bold; color: red }
   #blurb { margin: 8ex 2em; }
+  table { margin-left: auto; margin-right: auto; border: 1pt solid; border-collapse: collapse; }
+  td { border: 1pt solid; padding: 0.5ex 0.5em; }
  </style>
 </head>
 <body><h1 align="center">brmelect Web Ballot</h1>
@@ -43,14 +47,12 @@ print <<EOT;
 <b style="color: darkred">Keep your token secret until the vote is closed!<br />
 Udržujte svůj token v tajnosti, dokud není hlasování uzavřeno!</b></p>
 
-<p>Enter preference numbers
-for individual candidates.  You may skip some candidates (which you absolutely
-do not wish to elect), but you must select at least one candidate. You must start
-numbering your candidates with number 1, all candidates must have a unique
-number and you must not skip any number.</p>
+<p align="center">Sort individual candidates by preference.<br />
+If you do not wish to elect some candidates at all, do not assign any preference to them.<br />
+Do not leave any gaps in the preferences.</p>
 
-<p><a href="https://brmlab.cz/members/vnitrni-predpisy/sbrm/2011/5">2011/5 VII.8</a>: <em>Účastníci Valné hromady označí na volebních lístcích pořadí kandidátů připsáním čísla z nepřerušené řady přirozených čísel začínající jedničkou ke jménu kandidáta. Hlasovací lístek, který neobsahuje žádného označeného kandidáta nebo obsahuje alespoň dvě stejná čísla připsaná k různým kandidátům nebo takový, na kterém nejsou použita čísla z nepřerušené řady přirozených čísel, nebo žádný kandidát není označen číslem jedna, je neplatný.
-</em></p>
+<!--<p><a href="https://brmlab.cz/members/vnitrni-predpisy/sbrm/2011/5">2011/5 VII.8</a>: <em>Účastníci Valné hromady označí na volebních lístcích pořadí kandidátů připsáním čísla z nepřerušené řady přirozených čísel začínající jedničkou ke jménu kandidáta. Hlasovací lístek, který neobsahuje žádného označeného kandidáta nebo obsahuje alespoň dvě stejná čísla připsaná k různým kandidátům nebo takový, na kterém nejsou použita čísla z nepřerušené řady přirozených čísel, nebo žádný kandidát není označen číslem jedna, je neplatný.
+</em></p>-->
 
 <!-- <p>If you wish to cast an invalid vote, check the invalid ballot checkbox.</p> -->
 
@@ -61,7 +63,38 @@ number and you must not skip any number.</p>
 EOT
 
 
-if ($q->param('go')) {
+if ($q->param('inspect')) {
+	my $token = $q->param('token');
+	unless (grep { $_ eq $token } @tokens) {
+		print qq#<p class="error">ERROR: Unknown token specified. Please go back and try again.</p>#;
+		exit;
+	}
+
+	my %votes;
+	open my $fh, $votefile or die "$!";
+	while (<$fh>) {
+		chomp;
+		my @b = split/,/;
+		$votes{$b[0]} = [@b];
+	}
+	close $fh;
+	if (not $votes{$token}) {
+		print qq#<p>No vote for this (valid) token has been cast.</p>#;
+		exit;
+	} else {
+		my @vote = @{$votes{$token}};
+		shift @vote;
+		print "<table>\n";
+		for my $i (0..$#names) {
+			print "<tr><td>".$names[$i]."</td><td>".$vote[$i]."</td></tr>\n";
+		}
+		print "</table>\n";
+	}
+	exit;
+}
+
+
+if ($q->param('submit')) {
 	my $token = $q->param('token');
 	unless (grep { $_ eq $token } @tokens) {
 		print qq#<p class="error">ERROR: Unknown token specified. Please go back and try again.</p>#;
@@ -110,7 +143,7 @@ if ($q->param('go')) {
 
 	print STDERR "$votestr\n";
 
-	open $fh, '>>/home/pasky/votes.txt' or die "$!";
+	open $fh, '>>' . $votefile or die "$!";
 	print $fh "$votestr\n";
 	close $fh;
 
@@ -123,7 +156,9 @@ if ($q->param('go')) {
 print <<EOT;
 <form method="post">
 <div id="ballot">
-<p align="center"><b>Token:</b> <input type="password" name="token" size="5" maxlength="5" /></p>
+<p align="center"><b>Token:</b> <input type="password" name="token" size="5" maxlength="5" />
+(<input type="submit" name="inspect" value="Inspect Vote" />)</p>
+</p>
 <ul>
 EOT
 
@@ -136,7 +171,7 @@ print <<EOT;
 </ul>
 <!-- <p align="center"><input type="checkbox" name="invalid" value="1" /> Produce <em>invalid</em> ballot</p> -->
 </div>
-<p align="center"><input type="submit" name="go" value="Submit Vote" /></p>
+<p align="center"><input type="submit" name="submit" value="Submit Vote" /></p>
 </form>
 
 </body></html>
