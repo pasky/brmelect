@@ -136,10 +136,10 @@ my ($x, $y) = (0, 0);
 for my $n (1..$n_ballots) {
 	ballot(ballot_cr($surface, [$x, $y]), \@names);
 
-	$y++;
-	if ($y >= $grid[1]) {
-		$y = 0; $x++;
-		if ($x >= $grid[0]) {
+	$x++;
+	if ($x >= $grid[0]) {
+		$x = 0; $y++;
+		if ($y >= $grid[1]) {
 			my $cr = Cairo::Context->create($surface);
 			$cr->show_page;
 			($x, $y) = (0, 0);
