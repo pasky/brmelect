@@ -11,8 +11,8 @@ use utf8;
 
 # -- User configuration --
 
-our @paper = (598, 842); # A4, 72dpi
-our @margin = (72, 72);
+our @paper = (842, 598); # A4 landscape, 72dpi
+our @margin = (18, 18);
 our @ballot = (147, 36);
 our $filename = 'ballots.pdf';
 
