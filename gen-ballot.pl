@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -CSDA
 # (c) Petr Baudis  2011, 2014  MIT licence
 # 
 # Generate PDF with ballots.
@@ -6,6 +6,7 @@
 
 use strict;
 use warnings;
+use utf8;
 
 
 # -- User configuration --
