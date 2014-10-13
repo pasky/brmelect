@@ -52,7 +52,7 @@ number and you must not skip any number.</p>
 <p><a href="https://brmlab.cz/members/vnitrni-predpisy/sbrm/2011/5">2011/5 VII.8</a>: <em>Účastníci Valné hromady označí na volebních lístcích pořadí kandidátů připsáním čísla z nepřerušené řady přirozených čísel začínající jedničkou ke jménu kandidáta. Hlasovací lístek, který neobsahuje žádného označeného kandidáta nebo obsahuje alespoň dvě stejná čísla připsaná k různým kandidátům nebo takový, na kterém nejsou použita čísla z nepřerušené řady přirozených čísel, nebo žádný kandidát není označen číslem jedna, je neplatný.
 </em></p>
 
-<p>If you wish to cast an invalid vote, check the invalid ballot checkbox.</p>
+<!-- <p>If you wish to cast an invalid vote, check the invalid ballot checkbox.</p> -->
 
 <hr />
 
@@ -134,7 +134,7 @@ if ($q->param('go')) {
 	close $fh;
 
 	(my $rvotestr = $votestr) =~ s/^.*?,//;
-	print qq#<p>Success.  Your vote ($rvotestr) has been saved.  You may still revise your vote before the closing call if you wish, but do NOT cast a paper ballot at this point anymore!</p>\n#;
+	print qq#<p>Success.  Your vote ($rvotestr) has been saved.</p> <p>You may still revise your vote before the closing call if you wish, but do NOT cast a paper ballot at this point anymore!</p>\n#;
 
 	exit;
 }
@@ -152,7 +152,7 @@ for my $name (@names) {
 
 print <<EOT;
 </ul>
-<p align="center"><input type="checkbox" name="invalid" value="1" /> Produce <em>invalid</em> ballot</p>
+<!-- <p align="center"><input type="checkbox" name="invalid" value="1" /> Produce <em>invalid</em> ballot</p> -->
 </div>
 <p align="center"><input type="submit" name="go" value="Submit Vote" /></p>
 </form>
