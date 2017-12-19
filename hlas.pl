@@ -3,6 +3,8 @@
 # Copyright TMA 2014
 # Brmlab can use this free of charge as long as TMA is member. For other licensing options contact the author.
 
+# Example input: hlas-example.txt
+
 use strict;
 use warnings;
 use Data::Dumper;

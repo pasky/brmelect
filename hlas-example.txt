@@ -1,0 +1,15 @@
+3
+Shub-Niggurath
+Yog Shoggoth
+Cthulhu
+Nyarlathotep
+Abdul Al Hazred
+
+0 1 2
+2 3 4 5 1
+1
+0 0 0 0 1
+0 3 2 1 0
+
+0
+3
