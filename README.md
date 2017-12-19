@@ -49,3 +49,11 @@ Then, build input for `hlas.pl` - a text file, that has:
 (See hlas-example.txt for an example.)
 
 Then, run `hlas.pl < textfile` and there you go!
+
+Drawing Lots
+------------
+
+If you see `Chybi zaznam o losovani.` there was a tie. Draw a random
+vote and look at the number of the candidate who was assigned number
+one (1) on this ballot.  Enter this number after the last empty line
+(before the final "0" line) and run `hlas.pl` again.
