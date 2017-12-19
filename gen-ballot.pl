@@ -13,7 +13,7 @@ use utf8;
 
 our @paper = (842, 598); # A4 landscape, 72dpi
 our @margin = (18, 18);
-our @ballot = (147, 36);
+our @ballot = (187, 36);
 our $filename = 'ballots.pdf';
 
 our $fontface = 'Arial';
@@ -41,7 +41,7 @@ while (<>) {
 	push @names, $_;
 }
 
-$ballot[1] += @names * ($linespacing[1] + $fontsize[1] + 5);
+$ballot[1] += @names * ($linespacing[1] + $fontsize[1] + 9);
 
 our $surface = Cairo::PdfSurface->create ($filename, @paper);
 
